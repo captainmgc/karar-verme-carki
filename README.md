@@ -8,6 +8,14 @@ Kararlarınızı eğlenceli ve adil bir şekilde verin! Animasyonlu, modern ve t
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
 
+## 📸 Ekran Görüntüleri
+
+| Aydınlık Mod | Karanlık Mod |
+|:------------:|:------------:|
+| ![Light Mode](Resimler/Ekran%20görüntüsü%202025-12-15%20211737.png) | ![Dark Mode](Resimler/Ekran%20görüntüsü%202025-12-15%20211749.png) |
+
+![Çark Görünümü](Resimler/Ekran%20görüntüsü%202025-12-15%20211726.png)
+
 ## ✨ Özellikler
 
 ### 🎯 Temel Özellikler
