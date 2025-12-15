@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Çark Çevirme Uygulaması - Kararlarınızı anında verin!">
+    <title>Çark Çevirme - Online Karar Çarkı</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png"
+        href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=">
+</head>
+
+<body>
+
+    <!-- Confetti Container -->
+    <div id="confettiContainer" class="confetti-container"></div>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo-container">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"
+                class="logo-svg">
+                <circle cx="20" cy="20" r="18" stroke="url(#logo_grad)" stroke-width="4" />
+                <path d="M20 20L20 5" stroke="var(--logo-color)" stroke-width="3" stroke-linecap="round" />
+                <path d="M20 20L32 28" stroke="var(--logo-color)" stroke-width="3" stroke-linecap="round" />
+                <path d="M20 20L8 28" stroke="var(--logo-color)" stroke-width="3" stroke-linecap="round" />
+                <circle cx="20" cy="20" r="4" fill="var(--logo-color)" />
+                <defs>
+                    <linearGradient id="logo_grad" x1="2" y1="2" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#7000ff" />
+                        <stop offset="0.5" stop-color="#ff0055" />
+                        <stop offset="1" stop-color="#ffcc00" />
+                    </linearGradient>
+                </defs>
+            </svg>
+            <span>KARAR ÇARKI</span>
+        </div>
+
+        <div class="header-controls">
+            <!-- Sound Toggle -->
+            <button id="soundToggle" class="icon-button" aria-label="Ses Aç/Kapat" title="Ses Aç/Kapat">
+                🔊
+            </button>
+            <!-- Debug Toggle -->
+            <button id="debugToggle" class="icon-button" aria-label="Debug Modu" title="Debug Modu">
+                🐛
+            </button>
+            <!-- Theme Toggle -->
+            <button id="themeToggle" class="theme-toggle" aria-label="Karanlık Mod" title="Karanlık Mod">
+                🌙
+            </button>
+        </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="container">
+
+        <!-- LEFT PANEL (CONTROLS) -->
+        <aside class="control-panel">
+            <div class="status-bar">
+                <span>Çevire</span>
+                <div class="play-icon-mini">▶</div>
+                <span>bas ve çarkı çevir!</span>
+            </div>
+
+            <div id="totalCount" class="input-count-label">Seçenek sayısı: 6</div>
+
+            <div class="toggle-area">
+                <span class="toggle-label">Toplu Seçenek Gir</span>
+                <label class="switch">
+                    <input type="checkbox" id="inputToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <!-- Single Input Mode -->
+            <div class="input-group">
+                <input type="text" id="singleInput" class="single-input" placeholder="Çarka seçenek ekleyin"
+                    maxlength="50">
+                <button id="btnAdd" class="btn-add">Ekle</button>
+            </div>
+
+            <!-- Bulk Input Mode (Initially Hidden) -->
+            <textarea id="bulkTextarea" class="bulk-textarea" placeholder="Her satıra bir seçenek yazın..."></textarea>
+
+            <!-- Options List (Single Mode) -->
+            <div id="optionsList" class="options-list">
+                <!-- JS ile doldurulacak -->
+            </div>
+
+            <!-- History Section -->
+            <div class="history-section">
+                <div class="section-header">
+                    <span class="section-title">📜 Geçmiş</span>
+                    <button id="clearHistory" class="btn-clear" title="Geçmişi Temizle">🗑️</button>
+                </div>
+                <div id="historyList" class="history-list">
+                    <p class="empty-history">Henüz sonuç yok</p>
+                </div>
+            </div>
+
+            <!-- Fairness Note -->
+            <div class="fairness-note">
+                <span>🎲</span>
+                <p>Seçimler <strong>Math.random()</strong> kullanılarak tamamen rastgele yapılır. Her dilimin seçilme
+                    şansı eşittir.</p>
+            </div>
+
+        </aside>
+
+        <!-- RIGHT PANEL (WHEEL) -->
+        <main class="wheel-wrapper">
+            <div class="wheel-container">
+                <canvas id="wheelCanvas"></canvas>
+
+                <!-- Pointer -->
+                <div class="pointer">
+                    <svg viewBox="0 0 40 50">
+                        <polygon points="20,50 0,10 20,20 40,10" />
+                    </svg>
+                </div>
+
+                <!-- Center Play Button -->
+                <div id="centerCircle" class="center-circle">
+                    <div class="play-icon"></div>
+                </div>
+            </div>
+
+            <!-- Debug Panel -->
+            <div id="debugPanel" class="debug-panel hidden">
+                <div class="debug-title">🐛 Debug Bilgisi</div>
+                <div class="debug-row">
+                    <span>Mevcut Açı:</span>
+                    <span id="debugAngle">0°</span>
+                </div>
+                <div class="debug-row">
+                    <span>Seçilen Dilim:</span>
+                    <span id="debugSlice">-</span>
+                </div>
+                <div class="debug-row">
+                    <span>Dilim Açısı:</span>
+                    <span id="debugSliceAngle">-</span>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- RESULT MODAL -->
+    <div id="resultOverlay" class="result-overlay">
+        <div class="result-modal">
+            <h2>🎉 Sonuç:</h2>
+            <div id="resultText" class="result-text">Seçenek</div>
+            <button id="btnClose" class="btn-close">Tamam</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
